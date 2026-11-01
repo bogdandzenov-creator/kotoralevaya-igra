@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Которалевая игра</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:14px;background:radial-gradient(ellipse at top,#49516f,#17192b 70%);color:#f7f4ff;font-family:system-ui,Arial,sans-serif}.wrap{max-width:1050px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}h1{margin:5px 0;color:#ffc0dc;font-size:clamp(1.8rem,6vw,3rem);text-shadow:0 4px 18px #0008}.muted{color:#bdc4d8;font-size:.88rem}.resources{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}.res,.panel{background:linear-gradient(145deg,#303956,#20263b);border:1px solid #ffffff20;border-radius:16px;padding:12px;box-shadow:0 10px 25px #0003}.res small{display:block;color:#bdc4d8}.res b{color:#ffdf83;font-size:1.15rem;overflow-wrap:anywhere}.kingdom{position:relative;min-height:265px;border-radius:22px;overflow:hidden;border:1px solid #ffffff30;background:linear-gradient(#8fc4d0 0%,#d0dfb0 58%,#74965e 59%,#405b40 100%);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -25px 40px #172b2777}.castle{font-size:clamp(90px,18vw,155px);filter:drop-shadow(0 15px 9px #26332688);z-index:2}.banner{position:absolute;top:12px;left:12px;background:#17243bc9;border-radius:99px;padding:7px 12px;font-weight:800}.kingdom p{position:absolute;bottom:8px;left:10px;right:10px;text-align:center;background:#17243bc9;border-radius:99px;padding:7px;margin:0}.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}.tabs button{background:#ffffff18;color:white;border:1px solid #ffffff25}.tabs button.active{background:linear-gradient(135deg,#ffacd0,#c4a4ff);color:#281a36}.tab{display:none}.tab.active{display:block}.panel h2{color:#ffacd0;margin:0 0 10px;font-size:1.2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.card{background:#151c2d;border:1px solid #ffffff1b;border-radius:13px;padding:12px}.icon{font-size:38px}.card h3{margin:4px 0;color:#ffe0a0}.card p{color:#bdc4d8;font-size:.87rem;min-height:38px}button{border:0;border-radius:11px;padding:10px 13px;background:linear-gradient(135deg,#ffacd0,#c4a4ff);color:#281a36;font-weight:850;cursor:pointer;font-size:.94rem}button:disabled{opacity:.4;cursor:not-allowed}.card button{width:100%}.wide{width:100%;margin:6px 0}input{width:100%;padding:11px;border-radius:10px;border:1px solid #ffffff30;background:#11182a;color:white;font-size:1rem;margin:5px 0 8px}.bar{height:13px;background:#11182a;border-radius:99px;overflow:hidden}.bar div{height:100%;background:linear-gradient(90deg,#ff789e,#ffdc7d);width:0%;transition:width .2s}.msg{color:#ffdf83;min-height:24px;font-weight:750;margin-top:8px}.log{max-height:180px;overflow:auto;background:#11182a;border-radius:10px;padding:9px;color:#cbd3e4;font-size:.87rem}.log div{padding:4px;border-bottom:1px solid #ffffff12}.badge{display:inline-block;border-radius:99px;padding:3px 8px;background:#ffffff18;color:#ffe0a0;font-size:.78rem}footer{text-align:center;color:#929db5;margin:18px 0;font-size:.82rem}@media(max-width:650px){.resources{grid-template-columns:repeat(2,1fr)}.kingdom{min-height:225px}}
+</style></head>
+<body><div class="wrap">
+<header><div><h1>🐈 КОТОРАЛЕВАЯ ИГРА</h1><p class="muted">Построй королевство. Собери армию. Правь всеми девятью лотками!</p></div><span class="badge" id="era">Эпоха: Первое поселение</span></header>
+<div class="resources">
+<div class="res"><small>🪙 Казна</small><b id="gold">0</b></div><div class="res"><small>🪵 Дерево</small><b id="wood">0</b></div><div class="res"><small>🪨 Камень</small><b id="stone">0</b></div><div class="res"><small>🐟 Еда</small><b id="food">0</b></div><div class="res"><small>🐱 Коты</small><b id="cats">0</b></div>
+</div>
+<section class="kingdom"><div class="banner" id="rank">👑 Кот-глава поселения</div><div class="castle" id="castle">🏕️</div><p id="sceneText">Твоё великое правление начинается с маленького лагеря!</p></section>
+<nav class="tabs"><button class="active" data-tab="build">🏗️ Строительство</button><button data-tab="people">🐾 Жители</button><button data-tab="army">⚔️ Армия</button><button data-tab="world">🗺️ Завоевания</button><button data-tab="research">🔬 Исследования</button><button data-tab="stats">📜 Летопись</button><button data-tab="codes">🔐 Код</button></nav>
+<section class="tab panel active" id="build"><h2>🏗️ Строй свою империю</h2><p class="muted">Здания производят ресурсы каждую секунду. Сначала собери материалы, затем строй!</p><div class="grid" id="buildings"></div></section>
+<section class="tab panel" id="people"><h2>🐾 Коты-жители</h2><p>Коты работают, едят и помогают империи расти. Нанимай жителей, но следи за запасами еды.</p><div class="grid"><div class="card"><div class="icon">🐈</div><h3>Пригласить кота</h3><p>Новый житель пополнит население и будет платить налоги.</p><button id="hire">Нанять кота — 50 🪙 и 10 🐟</button></div><div class="card"><div class="icon">🍲</div><h3>Праздничный пир</h3><p>Подними настроение жителей и получи временный прирост налогов.</p><button id="feast">Устроить пир — 100 🐟</button></div></div><div class="msg" id="peopleMsg"></div></section>
+<section class="tab panel" id="army"><h2>⚔️ Королевская армия</h2><p>Тренируй воинов-котов для защиты границ и будущих завоеваний.</p><div class="grid"><div class="card"><div class="icon">🛡️</div><h3>Кот-стражник</h3><p>Сила 5. Защищает империю от набегов.</p><button id="guard">Обучить — 75 🪙 и 15 🐟</button></div><div class="card"><div class="icon">🏹</div><h3>Кот-лучник</h3><p>Сила 12. Особенно полезен в походах.</p><button id="archer">Обучить — 150 🪙 и 25 🪵</button></div><div class="card"><div class="icon">🐯</div><h3>Тигровый рыцарь</h3><p>Сила 30. Элитный боец империи.</p><button id="knight">Обучить — 400 🪙 и 40 🪨</button></div></div><p>Армия: <b id="armyPower">0</b> силы · Воинов: <b id="soldiers">0</b></p></section>
+<section class="tab panel" id="world"><h2>🗺️ Карта соседних земель</h2><p>Отправляй армию в поход. Победа приносит ресурсы и расширяет империю.</p><div class="grid" id="lands"></div><div class="msg" id="worldMsg"></div></section>
+<section class="tab panel" id="research"><h2>🔬 Дерево технологий</h2><p>Открывай знания, которые навсегда усилят твоё королевство.</p><div class="grid" id="techs"></div></section>
+
+<section class="tab panel" id="stats"><h2>📜 Великая летопись</h2><div id="report"></div><h3>Последние события</h3><div class="log" id="log"></div><button id="save" class="wide">💾 Сохранить империю</button><button id="reset" class="wide" style="background:#ff9999">Начать новую империю</button></section>
+<footer>Империя Котов · Автосохранение в этом браузере · Да здравствует мяу!</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id),fmt=n=>Math.floor(n).toLocaleString('ru-RU');
+const initial={gold:150,wood:100,stone:60,food:100,cats:5,guard:0,archer:0,knight:0,build:{hut:0,lumber:0,mine:0,farm:0,market:0,barracks:0},tech:[],lands:[],used:[],logs:['Империя основана. Да здравствует король!'],taxBoost:0};
+let g={...initial,build:{...initial.build},tech:[],lands:[],used:[],logs:[...initial.logs]};try{let s=JSON.parse(localStorage.getItem('catEmpireSave'));if(s)g={...g,...s,build:{...g.build,...s.build}}}catch(e){}
+const buildings=[
+{id:'hut',name:'Кошачий домик',icon:'🏠',desc:'Увеличивает население и приносит немного налогов.',cost:[60,25,0,0],effect:'Налоги: +2 🪙/сек.'},
+{id:'lumber',name:'Лесопилка',icon:'🪓',desc:'Коты-плотники добывают дерево.',cost:[80,0,15,0],effect:'Дерево: +1/сек.'},
+{id:'mine',name:'Каменный карьер',icon:'⛏️',desc:'Добывает камень для больших построек.',cost:[100,20,0,0],effect:'Камень: +1/сек.'},
+{id:'farm',name:'Рыбная ферма',icon:'🐟',desc:'Кормит жителей и помогает расти населению.',cost:[70,15,0,0],effect:'Еда: +2/сек.'},
+{id:'market',name:'Императорский рынок',icon:'🏪',desc:'Торговцы приносят больше золотых монет.',cost:[250,40,30,0],effect:'Золото: +5/сек.'},
+{id:'barracks',name:'Казармы',icon:'🏰',desc:'Открывает место для военных тренировок.',cost:[300,80,100,0],effect:'Военная инфраструктура.'}
+];
+const lands=[{name:'Луговые мышиные поля',icon:'🌾',power:10,reward:180,desc:'Лёгкий поход. Много еды и немного золота.'},{name:'Шепчущий лес',icon:'🌲',power:35,reward:500,desc:'В лесу спрятаны запасы дерева.'},{name:'Каменные холмы',icon:'⛰️',power:85,reward:1300,desc:'Тяжёлый поход за камнем и золотом.'},{name:'Королевство Сов',icon:'🦉',power:180,reward:4000,desc:'Сильный противник. Награда достойна императора.'},{name:'Драконьи земли',icon:'🐉',power:400,reward:12000,desc:'Легендарное испытание для великой армии.'}];
+const techs=[{id:'agri',name:'Умное рыболовство',icon:'🎣',cost:500,desc:'+50% производства еды.'},{id:'trade',name:'Кошачья торговля',icon:'💰',cost:900,desc:'+50% производства золота.'},{id:'craft',name:'Мастерские лапки',icon:'🪚',cost:1200,desc:'+50% дерева и камня.'},{id:'military',name:'Тактика девяти жизней',icon:'📯',cost:2000,desc:'+50% силы армии.'}];
+function log(t){g.logs.unshift(t);g.logs=g.logs.slice(0,30)}
+function save(){localStorage.setItem('catEmpireSave',JSON.stringify(g))}
+function spend(gold,wood=0,stone=0,food=0){if(g.gold<gold||g.wood<wood||g.stone<stone||g.food<food)return false;g.gold-=gold;g.wood-=wood;g.stone-=stone;g.food-=food;return true}
+function army(){return g.guard*5+g.archer*12+g.knight*30}
+function tech(id){return g.tech.includes(id)}
+function render(){
+$('gold').textContent=fmt(g.gold);$('wood').textContent=fmt(g.wood);$('stone').textContent=fmt(g.stone);$('food').textContent=fmt(g.food);$('cats').textContent=fmt(g.cats);
+$('armyPower').textContent=fmt(army()*(tech('military')?1.5:1));$('soldiers').textContent=g.guard+g.archer+g.knight;
+let total=Object.values(g.build).reduce((a,b)=>a+b,0);$('castle').textContent=total>=12?'🏰':total>=6?'🏯':total>=2?'🏡':'🏕️';
+$('rank').textContent=total>=15?'👑 Император котов':total>=8?'⚜️ Великий король':total>=3?'🐾 Князь котов':'👑 Глава поселения';
+$('sceneText').textContent=`В империи ${fmt(g.cats)} котов, ${fmt(total)} построек и ${fmt(army())} военной силы.`;
+$('buildings').innerHTML=buildings.map(b=>{let n=g.build[b.id],c=b.cost.map((v,i)=>Math.floor(v*Math.pow(1.55,n)));return `<div class="card"><div class="icon">${b.icon}</div><h3>${b.name} · ур. ${n}</h3><p>${b.desc}<br><span class="muted">${b.effect}</span></p><button data-build="${b.id}" ${g.gold<c[0]||g.wood<c[1]||g.stone<c[2]?'disabled':''}>Построить · ${fmt(c[0])}🪙 ${fmt(c[1])}🪵 ${fmt(c[2])}🪨</button></div>`}).join('');
+$('lands').innerHTML=lands.map((l,i)=>`<div class="card"><div class="icon">${l.icon}</div><h3>${l.name}</h3><p>${l.desc}<br>Сила врага: ${l.power} · Награда: ${fmt(l.reward)} 🪙</p><button data-land="${i}" ${g.lands.includes(i)?'disabled':''}>${g.lands.includes(i)?'Завоёвано ✓':'Отправить армию'}</button></div>`).join('');
+$('techs').innerHTML=techs.map(t=>`<div class="card"><div class="icon">${t.icon}</div><h3>${t.name}</h3><p>${t.desc}</p><button data-tech="${t.id}" ${tech(t.id)||g.gold<t.cost?'disabled':''}>${tech(t.id)?'Изучено ✓':'Изучить · '+fmt(t.cost)+' 🪙'}</button></div>`).join('');
+$('report').innerHTML=`<p>Население: <b>${fmt(g.cats)}</b> котов</p><p>Построек: <b>${total}</b></p><p>Сила армии: <b>${fmt(army())}</b></p><p>Завоёвано земель: <b>${g.lands.length}/${lands.length}</b></p><p>Изучено технологий: <b>${g.tech.length}/${techs.length}</b></p>`;
+$('log').innerHTML=g.logs.map(x=>`<div>• ${x}</div>`).join('');
+}
+$('buildings').onclick=e=>{let b=buildings.find(x=>x.id===e.target.dataset.build);if(!b)return;let n=g.build[b.id],c=b.cost.map(v=>Math.floor(v*Math.pow(1.55,n)));if(spend(...c)){g.build[b.id]++;if(b.id==='hut')g.cats+=3;log('Построено: '+b.name);render();save()}};
+$('hire').onclick=()=>{if(spend(50,0,0,10)){g.cats++;log('В империю прибыл новый кот-житель.');render();save()}else $('peopleMsg').textContent='Не хватает золота или еды!'};
+$('feast').onclick=()=>{if(g.food>=100){g.food-=100;g.taxBoost=60;$('peopleMsg').textContent='Пир начался! Налоги удвоены на 60 секунд.';log('Император устроил пир!');save()}else $('peopleMsg').textContent='Нужно 100 еды.'};
+$('guard').onclick=()=>{if(spend(75,0,0,15)){g.guard++;log('Обучен кот-стражник.');render();save()}};
+$('archer').onclick=()=>{if(spend(150,25)){g.archer++;log('Обучен кот-лучник.');render();save()}};
+$('knight').onclick=()=>{if(spend(400,0,40)){g.knight++;log('Обучен тигровый рыцарь.');render();save()}};
+$('lands').onclick=e=>{let i=Number(e.target.dataset.land);if(!Number.isInteger(i)||g.lands.includes(i))return;let strength=army()*(tech('military')?1.5:1);if(strength<lands[i].power){$('worldMsg').textContent='Армия слишком слаба! Тренируй больше воинов.';return}g.lands.push(i);g.gold+=lands[i].reward;g.wood+=Math.floor(lands[i].reward/20);g.food+=Math.floor(lands[i].reward/15);log('Завоёвана земля: '+lands[i].name+'!');$('worldMsg').textContent='Победа! Новая земля присоединена к империи!';render();save()};
+$('techs').onclick=e=>{let t=techs.find(x=>x.id===e.target.dataset.tech);if(!t||tech(t.id)||g.gold<t.cost)return;g.gold-=t.cost;g.tech.push(t.id);log('Изучена технология: '+t.name);render();save()};
+
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))});
+$('save').onclick=()=>{save();log('Империя сохранена.');render()};
+$('reset').onclick=()=>{if(confirm('Начать новую империю? Старый прогресс будет удалён.')){g={...initial,build:{...initial.build},tech:[],lands:[],used:[],logs:['Новая империя основана!']};save();render()}};
+let last=Date.now();setInterval(()=>{let dt=Math.min(5,(Date.now()-last)/1000);last=Date.now();let b=g.build;g.wood+=b.lumber*dt*(tech('craft')?1.5:1);g.stone+=b.mine*dt*(tech('craft')?1.5:1);g.food+=b.farm*2*dt*(tech('agri')?1.5:1);g.gold+=(b.market*5+b.hut*2+g.cats*.15)*dt*(tech('trade')?1.5:1)*(g.taxBoost>0?2:1);if(g.taxBoost>0)g.taxBoost=Math.max(0,g.taxBoost-dt);let upkeep=g.cats*.025*dt;g.food=Math.max(0,g.food-upkeep);if(g.food===0&&g.cats>5)g.cats=Math.max(5,g.cats-.01*dt);render();save()},1000);
+render();
+
+$('redeem').onclick=()=>{
+ const code=$('code').value.trim().toUpperCase();
+ const msg=$('codeMsg');
+ const used=game.usedCodes||[];
+ if(used.includes(code)){msg.textContent='Этот код уже использован!';return;}
+ if(code==='КОТ9000'){
+   game.gold += 99999999000000000;
+   game.usedCodes=used.concat(code);
+   msg.textContent='МЯУ! Ты получил огромную награду!';
+   update(); save();
+ } else {
+   msg.textContent='Такого кода нет. Проверь написание!';
+ }
+};
+</script>
+<section class="tab panel" id="codes">
+  <h2>🔐 Секретный код</h2>
+  <p>Введи свой код, чтобы получить награду.</p>
+  <input id="code" placeholder="Введи код">
+  <button id="redeem">Активировать</button>
+  <div class="msg" id="codeMsg"></div>
+</section>
+</body></html>
